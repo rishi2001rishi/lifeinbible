@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glowing Five-Pointed Star</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-image: conic-gradient(rgb(63, 0, 63), rgb(255, 1, 255), rgb(63, 0, 63), rgb(255, 1, 255));
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .five-pointed-star {
+            --star-color: gold;
+            margin: 1em auto;
+            font-size: 10em;
+            position: relative;
+            display: block;
+            width: 0px;
+            height: 0px;
+            border-right: 1em solid transparent;
+            border-bottom: 0.7em solid var(--star-color);
+            border-left: 1em solid transparent;
+            transform: rotate(35deg);
+            transition: opacity 0.5s ease;
+            background-image: conic-gradient(yellow, goldenrod, yellow, goldenrod);
+        }
+
+        .five-pointed-star:before {
+            border-bottom: 0.8em solid var(--star-color);
+            border-left: 0.3em solid transparent;
+            border-right: 0.3em solid transparent;
+            position: absolute;
+            height: 0;
+            width: 0;
+            top: -0.45em;
+            left: -0.65em;
+            display: block;
+            content: "";
+            transform: rotate(-35deg);
+        }
+
+        .five-pointed-star:after {
+            position: absolute;
+            display: block;
+            top: 0.03em;
+            left: -1.05em;
+            width: 0;
+            height: 0;
+            border-right: 1em solid transparent;
+            border-bottom: 0.7em solid var(--star-color);
+            border-left: 1em solid transparent;
+            transform: rotate(-70deg);
+            content: "";
+        }
+
+        .plus-symbol {
+            display: none;
+            font-size: 10em;
+            color: goldenrod;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .plus-symbol::before,
+        .plus-symbol::after {
+            content: '';
+            position: absolute;
+        }
+
+        .plus-symbol::before {
+            width: 60px;
+            height: 400px;
+            top: calc(50% - 150px);
+            left: calc(50% - 30px);
+            background-image: conic-gradient(yellow, goldenrod);
+        }
+
+        .plus-symbol::after {
+            width: 220px;
+            height: 60px;
+            top: calc(50% - 70px);
+            left: calc(50% - 110px);
+            background-image: conic-gradient(yellow, goldenrod);
+        }
+
+        /* Heart pop-out animation */
+        .heart {
+            position: absolute;
+            font-size: 2em;
+            color: gold; /* Ensures the hearts are gold */
+            animation: popOut 1s ease forwards, glowing 1.5s infinite alternate; /* Glowing effect */
+        }
+
+        /* Pop-out animation */
+        @keyframes popOut {
+            0% {
+                transform: scale(0) rotate(0deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        /* Glowing effect */
+        @keyframes glowing {
+            0% {
+                text-shadow: 0 0 5px gold, 0 0 10px gold, 0 0 15px gold, 0 0 20px gold, 0 0 25px gold;
+            }
+            50% {
+                text-shadow: 0 0 10px gold, 0 0 20px gold, 0 0 30px gold, 0 0 40px gold, 0 0 50px gold;
+            }
+            100% {
+                text-shadow: 0 0 5px gold, 0 0 10px gold, 0 0 15px gold, 0 0 20px gold, 0 0 25px gold;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="five-pointed-star"></div>
+        <div class="plus-symbol"></div>
+    </div>
+
+    <script>
+        document.addEventListener('click', function(event) {
+            const numHearts = 10;
+            
+            for (let i = 0; i < numHearts; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.textContent = '💛';  // Gold heart emoji
+                heart.style.left = `${event.clientX - 20 + Math.random() * 40}px`; // Random x position near the click
+                heart.style.top = `${event.clientY - 20 + Math.random() * 40}px`;  // Random y position near the click
+                document.body.appendChild(heart);
+
+                // Random direction for each heart and star after it pops out
+                setTimeout(() => {
+                    // Heart split and move
+                    const randomX = (Math.random() - 0.5) * 2000; // Random x direction
+                    const randomY = (Math.random() - 0.5) * 2000; // Random y direction
+
+                    heart.animate([ 
+                        { transform: 'scale(1)', opacity: 1, left: `${event.clientX}px`, top: `${event.clientY}px` },
+                        { transform: 'scale(0)', opacity: 0, left: `${event.clientX + randomX}px`, top: `${event.clientY + randomY}px` }
+                    ], {
+                        duration: 4000, // Animation duration
+                        easing: 'ease-out'
+                    });
+
+                    // Stars will split after heart pops out
+                    for (let j = 0; j < 3; j++) {
+                        const star = document.createElement('div');
+                        star.classList.add('heart');
+                        star.textContent = '⭐'; // Star emoji
+                        star.style.fontSize = '1em';  // Smaller stars
+                        document.body.appendChild(star);
+
+                        // Random direction for each star
+                        const randomStarX = (Math.random() - 0.5) * 2000; // Random x direction for stars
+                        const randomStarY = (Math.random() - 0.5) * 2000; // Random y direction for stars
+
+                        star.style.left = `${event.clientX}px`;  // Starting at the heart position
+                        star.style.top = `${event.clientY}px`;  // Starting at the heart position
+
+                        // Animate the star to move in a random direction
+                        star.animate([
+                            { transform: 'scale(1)', opacity: 1, left: `${event.clientX}px`, top: `${event.clientY}px` },
+                            { transform: 'scale(0)', opacity: 0, left: `${event.clientX + randomStarX}px`, top: `${event.clientY + randomStarY}px` }
+                        ], {
+                            duration: 3000, // Animation duration
+                            easing: 'ease-out'
+                        });
+
+                        // Remove the star after animation
+                        setTimeout(() => star.remove(), 1000);
+                    }
+                }, 100);  // Delay before splitting stars and hearts
+
+                // Remove heart after animation ends
+                setTimeout(() => heart.remove(), 1000);  // Remove heart after 1 second
+            }
+        });
+
+        setTimeout(function() {
+            var star = document.querySelector('.five-pointed-star');
+            star.style.opacity = '0'; // Make the star disappear
+
+            setTimeout(function() {
+                star.remove(); // Completely remove the star from the DOM
+
+                var plusSymbol = document.querySelector('.plus-symbol');
+                plusSymbol.style.display = 'block'; // Make the plus symbol appear
+
+                setTimeout(function() {
+                    window.location.href = 'page.html'; // Redirect to another page after 6 seconds
+                }, 5000); // Delay for 5 seconds after the plus symbol appears
+            }, 10); // Delay for 0.5 seconds after the star disappears
+        }, 3000); // Delay for 3 seconds before the star disappears
+    </script>
+</body>
+</html>
