@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {box-sizing: border-box}
+
+/* Set height of body and the document to 100% */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial;
+}
+
+/* Style tab links */
+.tablink {
+  background-color: chartreuse;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
+}
+
+.tablink:hover {
+  background-image: conic-gradient(silver, grey, silver, grey, silver, grey, silver, grey);
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  display: none;
+  padding: 100px 20px;
+  height: 100%;
+}
+
+/* Apply specific background for each tab */
+#Home {
+  background-color: white;
+}
+
+/* For the News, Contact, About pages */
+#News, #Contact, #About {
+  background-image: conic-gradient(silver, grey, silver, grey, silver, grey, silver, grey);
+}
+
+/* Heavy Christmas theme for Home page */
+#Home {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f5fafd; /* Light snow white background */
+  background-image: url('https://www.transparenttextures.com/patterns/snowflakes.png'); /* Snowflake pattern */
+  background-size: cover;
+  cursor: pointer;
+  color: #2e3d47;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Star Border Decoration */
+.christmas-edges {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Adding Red and White Star Decoration to the edges */
+.top, .bottom, .left, .right {
+  position: absolute;
+  background-color: transparent;
+}
+
+/* Top and Bottom Borders with Red and White Stars */
+.top {
+  width: 100%;
+  height: 80px;
+  top: 0;
+  background: url('https://cdn.pixabay.com/photo/2013/07/12/17/47/snowflake-152435_640.png');
+  background-size: 250px 200px;
+}
+
+.bottom {
+  width: 100%;
+  height: 80px;
+  bottom: 0;
+  background: url('') repeat-x;
+  background-size: 50px 50px;
+}
+
+/* Left and Right Borders with Red and White Stars */
+.left {
+  width: 80px;
+  height: 100%;
+  left: 0;
+  background: url('') repeat-y;
+  background-size: 50px 50px;
+}
+
+.right {
+  width: 80px;
+  height: 100%;
+  right: 0;
+  background: url('') repeat-y;
+  background-size: 50px 50px;
+}
+
+/* Snowflake Animation */
+.snowflakes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  background-color: #87cefa; /* Sky blue color */
+  border-radius: 50%;
+  opacity: 0.9;
+  box-shadow: 0 0 10px #87cefa, 0 0 20px #87cefa; /* Glowing effect */
+  animation: snow 10s linear infinite;
+}
+
+.snowflake:nth-child(odd) {
+  animation-duration: 12s;
+}
+
+.snowflake:nth-child(even) {
+  animation-duration: 8s;
+}
+
+/* Snowfall animation */
+@keyframes snow {
+  0% {
+    top: -10%;
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.search-container {
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+input[type="text"] {
+  padding: 12px;
+  width: 320px;
+  font-size: 18px;
+  border: 2px solid #e74c3c;
+  border-radius: 12px;
+  outline: none;
+  font-family: 'Arial', sans-serif;
+}
+
+input[type="text"]:focus {
+  border-color: #2ecc71; /* Green border when focused */
+}
+
+.message {
+  font-size: 28px;
+  font-weight: bold;
+  color: red;
+  text-align: center;
+  padding-top: 25px;
+  font-family: 'Georgia', serif;
+  z-index: 5;
+}
+
+.christmas-icon {
+  font-size: 45px;
+  color: #f39c12; /* Gold color */
+  margin-bottom: 10px;
+}
+
+/* Santa and Reindeer */
+.santa-deer {
+  font-size: 50px;
+  position: absolute;
+  bottom: 10%;
+  z-index: 10;
+  color: #c0392b;
+  animation: santa-fly 5s ease-in-out infinite;
+}
+
+@keyframes santa-fly {
+  0% {
+    right: -100%;
+  }
+  50% {
+    right: 50%;
+  }
+  100% {
+    right: 100%;
+  }
+}
+
+.santa-icon {
+  font-size: 50px;
+  color: #c0392b;
+}
+</style>
+</head>
+<body>
+
+<button class="tablink" onclick="openPage('Home', this, 'red')" id="defaultOpen">Home</button>
+<button class="tablink" onclick="openPage('News', this, 'green')">News</button>
+<button class="tablink" onclick="openPage('Contact', this, 'blue')">Contact</button>
+<button class="tablink" onclick="openPage('About', this, 'orange')">About the website</button>
+
+<div id="Home" class="tabcontent" onclick="redirectToNextPage()">
+  <!-- Snowflakes animation -->
+  <div class="snowflakes">
+    <div class="snowflake" style="left: 5%; animation-duration: 12s;"></div>
+    <div class="snowflake" style="left: 25%; animation-duration: 10s;"></div>
+    <div class="snowflake" style="left: 45%; animation-duration: 13s;"></div>
+    <div class="snowflake" style="left: 60%; animation-duration: 9s;"></div>
+    <div class="snowflake" style="left: 85%; animation-duration: 7s;"></div>
+    <div class="snowflake" style="left: 95%; animation-duration: 11s;"></div>
+  </div>
+
+  <div class="message">
+     <h1> Merry Christmas</h1>
+  </div>
+
+  <!-- Santa Claus and Reindeer -->
+  <div class="santa-deer">
+    <div class="santa-icon"></div> <!-- Santa Claus -->
+    <div>🦌🦌🦌🦌🦌🦌🎅</div> <!-- Reindeer and sleigh -->
+  </div>
+
+  <!-- Red and White Star Edge Decorations -->
+  <div class="christmas-edges">
+    <div class="top"></div>
+    <div class="bottom"></div>
+    <div class="left"></div>
+    <div class="right"></div>
+  </div>
+
+  <div class="search-container">
+    <div class="christmas-icon">🎄 Click here</div> <!-- Christmas Tree Icon -->
+    <input type="text" placeholder=" Search..." id="searchBox">
+  </div>
+
+  <div class="message">
+    Thirst to share God's unconditional love
+  </div>
+</div>
+
+<div id="News" class="tabcontent">
+  <h3>News</h3>
+  <p>Here is the news content.</p>
+</div>
+
+<div id="Contact" class="tabcontent">
+  <h3>Contact</h3>
+  <p>Get in touch, or swing by for a cup of coffee.</p>
+</div>
+
+<div id="About" class="tabcontent">
+  <h3>About</h3>
+  <p>Who we are and what we do.</p>
+</div>
+
+<script>
+function openPage(pageName, elmnt, color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(pageName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+}
+
+// Redirection function for Home page content click
+function redirectToNextPage() {
+  window.location.href = 'bible.html'; // Change to your desired URL
+}
+
+// Automatically open Home tab on load
+document.getElementById("defaultOpen").click();
+</script>
+
+</body>
+</html>
